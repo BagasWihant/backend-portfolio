@@ -19,12 +19,8 @@ return new class extends Migration
             $table->string('sub_title_id',100)->nullable();
             $table->string('small_sub_title_en',50)->nullable();
             $table->string('small_sub_title_id',50)->nullable();
-            $table->string('about_en',20);
-            $table->string('about_id',20);
             $table->text('description_en')->nullable();
             $table->text('description_id')->nullable();
-            $table->string('contact_en');
-            $table->string('contact_id');
             $table->string('contact_text_en');
             $table->string('contact_text_id');
             $table->boolean('is_active')->default(0);
