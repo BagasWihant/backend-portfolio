@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class GeneralListText extends Model
 {
     use HasFactory;
+    protected $table = 'general_text_list_text';
 }

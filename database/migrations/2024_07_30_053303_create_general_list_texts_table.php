@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('general_list_text', function (Blueprint $table) {
+        Schema::create('general_text_list_text', function (Blueprint $table) {
             $table->id();
             $table->foreignId('general_text_id');
             $table->foreignId('list_text_id');
@@ -25,10 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Schema::table('general_list_text', function (Blueprint $table) {
-        //     $table->dropForeign(['general_text_id']);
-        //     $table->dropForeign(['list_text_id']);
-        // });
-        Schema::dropIfExists('general_list_text');
+        Schema::dropIfExists('general_text_list_text');
     }
 };
