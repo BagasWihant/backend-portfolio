@@ -13,19 +13,19 @@ export default function Authenticated({ user, header, children }) {
     const listMenu = [
         {
             name: "Home",
-            href: route("admin.home"),
-            current: route().current("admin.home"),
+            href: route("general.index"),
+            current: route().current("general.index"),
         },
         {
             name: "List Project",
-            href: route("admin.project"),
-            current: route().current("admin.project"),
+            href: route("project.index"),
+            current: route().current("project.index"),
         },
     ];
 
     return (
         <ThemeProvider defaultTheme="dark" storageKey="darkmode">
-            <div className="min-h-screen bg-gray-100 dark:bg-gray-800 dark:text-white ">
+            <div className="min-h-screen bg-gray-100 dark:bg-gray-700 dark:text-white ">
                 <nav className="bg-white border-b dark:bg-gray-800 dark:text-white  border-gray-100">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex justify-between h-16">
