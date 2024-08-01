@@ -5,11 +5,11 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\ProjectController;
 
 Route::middleware(['auth','verified'])->group(function () {
-    Route::get('/general', [PortfolioController::class, 'index'])->name('admin.home');
-    Route::get('/settingsPortfolio', [PortfolioController::class, 'index'])->name('admin.project');
+    Route::resource('general', PortfolioController::class);
+    Route::resource('project', ProjectController::class);
     // Route::get('/dashboard', function () {
     //     return Inertia::render('Dashboard',['text' => 'Hello Worsssld!']);
     // })->name('dashboard');
