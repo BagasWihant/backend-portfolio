@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Project;
+use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
@@ -12,6 +13,14 @@ class ProjectController extends Controller
      */
     public function index()
     {
+
+        $data = Project::with(['stacks'])->get();
+
+        // foreach ($data as $value) {
+        //     foreach ($value->stacks as $stack) {
+        //         dump($stack->name);
+        //     }
+        // }
         return Inertia::render('ListProject');
         
     }

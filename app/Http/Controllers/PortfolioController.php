@@ -35,4 +35,18 @@ class PortfolioController extends Controller
     {
         return Inertia::render('CreateGeneralText');
     }
+
+    public function update(Request $request, string $id)
+    {
+        if($request->act === 0){
+            try {
+                GeneralText::query()->update(['is_active' => 0]);
+                GeneralText::where('id', $id)->update(['is_active' => 1]);
+                return response(json_encode(['message' => 'Success']), 200);
+            } catch (\Throwable $th) {
+                return response(json_encode(['message'=>$th->getMessage()]), 500);
+            }
+        }
+        return json_encode([$request->act]);
+    }
 }
