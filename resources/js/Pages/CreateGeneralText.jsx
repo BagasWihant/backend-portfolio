@@ -8,19 +8,19 @@ import { Head, Link, router } from "@inertiajs/react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { RocketIcon } from "lucide-react";
 
-export default function CreateGeneralText({ auth }) {
+export default function CreateGeneralText({ auth, status, data }) {
     const [message, setMessage] = useState(null);
     const initialState = {
-        title_en: "",
-        title_id: "",
-        sub_title_en: "",
-        sub_title_id: "",
-        small_sub_title_en: "",
-        small_sub_title_id: "",
-        description_en: "",
-        description_id: "",
-        contact_text_en: "",
-        contact_text_id: "",
+        title_en: data?.title_en ||"",
+        title_id: data?.title_id || "",
+        sub_title_en: data?.sub_title_en || "",
+        sub_title_id: data?.sub_title_id || "",
+        small_sub_title_en: data?.small_sub_title_en || "",
+        small_sub_title_id: data?.small_sub_title_id || "",
+        description_en: data?.description_en || "",
+        description_id: data?.description_id || "",
+        contact_text_en: data?.contact_text_en || "",
+        contact_text_id: data?.contact_text_id || "",
     };
     const [
         {
@@ -53,7 +53,7 @@ export default function CreateGeneralText({ auth }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(route("general.store"), {
+            const requestData = {
                 title_en,
                 title_id,
                 sub_title_en,
@@ -64,10 +64,10 @@ export default function CreateGeneralText({ auth }) {
                 description_id,
                 contact_text_en,
                 contact_text_id,
-            });
+            };
+            const response = await (status === "create" ? axios.post(route('general.store'), requestData) : axios.patch(route('general.update', data?.id), requestData));
 
             if (response.status == 200) {
-                clearState();
                 router.visit(route("general.index"), {
                     flash: {
                         success: "Data has been created",
@@ -87,11 +87,11 @@ export default function CreateGeneralText({ auth }) {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl dark:text-white text-gray-800  leading-tight ">
-                    Create General Text
+                    {status === 'create' ? "Create General Text" : "Edit General Text"}
                 </h2>
             }
         >
-                    <Head title="Create General Text" />
+            <Head title="Create General Text" />
             <div className=" max-w-7xl mx-auto mt-12">
                 {message && (
                     <Alert
@@ -108,7 +108,7 @@ export default function CreateGeneralText({ auth }) {
                 )}
                 <Link
                     href={route("general.index")}
-                    className="bg-red-500 dark:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    className="bg-amber-500 dark:bg-amber-700 text-white font-bold py-2 px-4 rounded"
                 >
                     Back
                 </Link>
@@ -235,7 +235,7 @@ export default function CreateGeneralText({ auth }) {
                             type="submit"
                             className="w-full mt-5 bg-blue-500 dark:text-white"
                         >
-                            Simpan
+                            {status === "create" ? "Save" : "Update"}
                         </Button>
                     </form>
                 </div>

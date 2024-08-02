@@ -87,7 +87,7 @@ export default function General({ auth, data }) {
                         {data.contact_text_id}
                     </p>
                 </div>
-                <DrawerFooter>
+                <DrawerFooter className={"max-w-7xl mx-auto"}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Button
                             className="w-full bg-red-500 p-2 rounded-md"
@@ -124,6 +124,10 @@ export default function General({ auth, data }) {
             });
     };
 
+    const editData = (id) => {
+        router.visit(route("general.edit", id));
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -155,23 +159,45 @@ export default function General({ auth, data }) {
                                 <TableHead className="text-right">
                                     Status
                                 </TableHead>
+                                <TableHead className="text-right">
+                                    Action
+                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {data.map((item) => (
                                 <TableRow
                                     key={item.id}
-                                    onClick={() => drawerDetail(item)}
                                 >
                                     <TableCell>{item.title_en}</TableCell>
                                     <TableCell>{item.sub_title_en}</TableCell>
                                     <TableCell className="text-ellipsis overflow-hidden whitespace-nowrap inline-block w-52">
                                         {item.description_en}
                                     </TableCell>
-                                    <TableCell className="text-right">
+                                    <TableCell className={`text-right ${
+                                        item.is_active ? "text-green-500" : "text-red-500"
+                                    }`}>
                                         {item.is_active
                                             ? "Active"
                                             : "Non Active"}
+                                    </TableCell>
+                                    <TableCell className="flex justify-center gap-3">
+                                        <Button
+                                            className="bg-amber-600 p-2 rounded-md dark:text-white"
+                                            onClick={() =>
+                                                editData(item.id)
+                                            }
+                                        >
+                                            Edit 
+                                        </Button>
+                                        <Button
+                                            className="bg-amber-600 p-2 rounded-md dark:text-white"
+                                            onClick={() =>
+                                                drawerDetail(item)
+                                            }
+                                        >
+                                            View
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
