@@ -13,14 +13,7 @@ class PortfolioController extends Controller
 
     public function index()
     {
-        $data = Project::with(['stacks'])->get();
-
-        // foreach ($data as $value) {
-        //     foreach ($value->stacks as $stack) {
-        //         dump($stack->name);
-        //     }
-        // }
-
+        $data = GeneralText::with('listText')->get();
         return Inertia::render('GeneralText', ['data' => $data]);
     }
 
@@ -36,5 +29,10 @@ class PortfolioController extends Controller
             return response(json_encode(['message'=>$th->getMessage()]), 500);
         }
 
+    }
+
+    public function create()
+    {
+        return Inertia::render('CreateGeneralText');
     }
 }
