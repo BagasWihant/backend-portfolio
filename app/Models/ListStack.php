@@ -11,6 +11,8 @@ class ListStack extends Model
 
     public $timestamps = false;
 
+    public $fillable=['name','path'];
+
     public function project_stacks(){
         return $this->belongsTo(ProjectStack::class);
     }
