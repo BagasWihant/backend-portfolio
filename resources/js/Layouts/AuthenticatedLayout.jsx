@@ -21,6 +21,11 @@ export default function Authenticated({ user, header, children }) {
             href: route("project.index"),
             current: route().current("project.index"),
         },
+        {
+            name: "List Stack",
+            href: route("stack.index"),
+            current: route().current("stack.index"),
+        },
     ];
 
     return (
