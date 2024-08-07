@@ -31,7 +31,8 @@
         "clsx": "^2.1.1",
         "cmdk": "^1.0.0",
         "lucide-react": "^0.417.0",
-        "react-multi-select-component": "^4.3.4",
+        "multiselect-react-dropdown": "^2.0.25",
+        "primereact": "^10.8.2",
         "tailwind-merge": "^2.4.0",
         "tailwindcss-animate": "^1.0.7",
         "vaul": "^0.9.1"
