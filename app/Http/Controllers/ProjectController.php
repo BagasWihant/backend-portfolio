@@ -23,7 +23,7 @@ class ProjectController extends Controller
         //         dump($stack->name);
         //     }
         // }
-        return Inertia::render('ListProject');
+        return Inertia::render('ListProject',['data'=>$data]);
         
     }
 

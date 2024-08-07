@@ -183,7 +183,7 @@ export default function General({ auth, data }) {
                                     </TableCell>
                                     <TableCell className="flex justify-center gap-3">
                                         <Button
-                                            className="bg-amber-600 p-2 rounded-md dark:text-white"
+                                            className="bg-purple-600 p-2 rounded-md dark:text-white"
                                             onClick={() =>
                                                 editData(item.id)
                                             }
@@ -191,7 +191,7 @@ export default function General({ auth, data }) {
                                             Edit 
                                         </Button>
                                         <Button
-                                            className="bg-amber-600 p-2 rounded-md dark:text-white"
+                                            className="bg-purple-600 p-2 rounded-md dark:text-white"
                                             onClick={() =>
                                                 drawerDetail(item)
                                             }

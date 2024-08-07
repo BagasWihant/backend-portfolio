@@ -54,7 +54,7 @@ export default function CreateProject({ auth, stack }) {
                 <div className="mt-12">
                     <Link
                         href={route("project.index")}
-                        className="bg-amber-600 p-2 rounded-md dark:text-white"
+                        className="bg-purple-600 p-2 rounded-md dark:text-white"
                     >
                         Back
                     </Link>

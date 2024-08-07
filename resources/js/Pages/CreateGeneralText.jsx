@@ -108,7 +108,7 @@ export default function CreateGeneralText({ auth, status, data }) {
                 )}
                 <Link
                     href={route("general.index")}
-                    className="bg-amber-500 dark:bg-amber-700 text-white font-bold py-2 px-4 rounded"
+                    className="bg-purple-500 dark:bg-purple-700 text-white font-bold py-2 px-4 rounded"
                 >
                     Back
                 </Link>

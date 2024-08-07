@@ -72,7 +72,6 @@ export default function ListStack({ auth, data }) {
         ));
     };
 
-    console.log(data.length);
     return (
         <>
             <Head title="List Stack" />
@@ -87,7 +86,7 @@ export default function ListStack({ auth, data }) {
                 <div className="mt-12">
                     <Link
                         href={route("stack.create")}
-                        className="bg-amber-600 p-2 rounded-md dark:text-white"
+                        className="bg-purple-600 p-2 rounded-md text-white"
                     >
                         Create Stack
                     </Link>
@@ -113,7 +112,7 @@ export default function ListStack({ auth, data }) {
                                             <TableCell>{item.name}</TableCell>
                                             <TableCell className="flex justify-center gap-3">
                                                 <Button
-                                                    className="bg-amber-600 p-2 rounded-md dark:text-white"
+                                                    className="bg-purple-600 p-2 rounded-md dark:text-white"
                                                     onClick={() =>
                                                         editData(item.id)
                                                     }
@@ -121,7 +120,7 @@ export default function ListStack({ auth, data }) {
                                                     Edit
                                                 </Button>
                                                 <Button
-                                                    className="bg-amber-600 p-2 rounded-md dark:text-white"
+                                                    className="bg-purple-600 p-2 rounded-md dark:text-white"
                                                     onClick={() =>
                                                         drawerDetail(item)
                                                     }

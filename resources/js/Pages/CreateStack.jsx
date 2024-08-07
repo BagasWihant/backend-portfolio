@@ -44,7 +44,7 @@ export default function CreateStack({ auth, status }) {
                 <div className="mt-12">
                     <Link
                         href={route("stack.index")}
-                        className="bg-amber-600 p-2 rounded-md dark:text-white"
+                        className="bg-purple-600 p-2 rounded-md dark:text-white"
                     >
                         Back
                     </Link>
