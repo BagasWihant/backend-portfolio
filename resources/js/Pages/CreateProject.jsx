@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import axios from "axios";
-import { MultiSelect } from "react-multi-select-component";
+import Multiselect from "multiselect-react-dropdown";
 export default function CreateProject({ auth, stack }) {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -26,17 +26,15 @@ export default function CreateProject({ auth, stack }) {
         fData.append("github", git);
         fData.append("demo", demo);
         fData.append("stacks", JSON.stringify(select));
-        console.log(JSON.stringify(select));
 
         axios
             .post(route("project.store"), fData)
             .then((res) => {
-                console.log(res);
-                // router.visit(route("project.index"), {
-                //     flash: {
-                //         success: "Data has been created",
-                //     },
-                // });
+                router.visit(route("project.index"), {
+                    flash: {
+                        success: res.data.message,
+                    },
+                });
             })
             .catch((err) => {
                 console.log(err);
@@ -111,11 +109,20 @@ export default function CreateProject({ auth, stack }) {
                                 onChange={(e) => setImg(e.target.files[0])}
                             />
                             <Label htmlFor="multiple">Stack</Label>
-                            <MultiSelect
-                                id="multiple"
+                            
+                            <Multiselect
+                                displayValue="name"
+                                isObject={true}
+                                onKeyPressFn={function noRefCheck() {}}
+                                onRemove={setSelect}
+                                onSelect={setSelect}
                                 options={stack}
-                                value={select}
-                                onChange={setSelect}
+                                style={{
+                                    optionContainer:{
+                                        backgroundColor: "#3d3d3d",
+                                        color: "white"
+                                    }
+                                }}
                             />
                             <div className="flex justify-end">
                                 <Button

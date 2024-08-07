@@ -32,7 +32,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        $stack = ListStack::select(['name as label','id as value'])->get();
+        $stack = ListStack::select(['name','id as value'])->get();
         return inertia('CreateProject',['stack'=>$stack]);
     }
 
@@ -68,7 +68,7 @@ class ProjectController extends Controller
                     'list_stack_id' => $stack->value
                 ]);
             }
-            return response('oke',200);
+            return response(json_encode(['message'=>'Succes Added']),200);
         } catch (\Throwable $th) {
             //throw $th;
             return response($th->getMessage(),500);
