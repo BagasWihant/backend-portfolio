@@ -9,6 +9,7 @@ class Project extends Model
 {
     use HasFactory;
 
+    public $fillable = ['name','description','long_description','img','github_url','demo_url'];
     public function stacks()
     {
         // return $this->hasMany(ProjectStack::class);

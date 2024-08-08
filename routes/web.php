@@ -6,10 +6,15 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\StackController;
 
 Route::middleware(['auth','verified'])->group(function () {
-    Route::resource('general', PortfolioController::class);
-    Route::resource('project', ProjectController::class);
+    Route::resources([
+        'general'=>PortfolioController::class,
+        'project'=> ProjectController::class,
+        'stack'=>StackController::class
+    ]);
+
     // Route::get('/dashboard', function () {
     //     return Inertia::render('Dashboard',['text' => 'Hello Worsssld!']);
     // })->name('dashboard');

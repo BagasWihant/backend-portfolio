@@ -21,6 +21,11 @@ export default function Authenticated({ user, header, children }) {
             href: route("project.index"),
             current: route().current("project.index"),
         },
+        {
+            name: "List Stack",
+            href: route("stack.index"),
+            current: route().current("stack.index"),
+        },
     ];
 
     return (
@@ -48,8 +53,8 @@ export default function Authenticated({ user, header, children }) {
                                     ))}
                                 </div>
                             </div>
-                                    <ModeToggle  />
                             <div className="hidden sm:flex sm:items-center sm:ms-6">
+                                <ModeToggle />
                                 <div className="ms-3 relative">
                                     <Dropdown>
                                         <Dropdown.Trigger>
@@ -156,13 +161,11 @@ export default function Authenticated({ user, header, children }) {
                         </div>
 
                         <div className="pt-4 pb-1 border-t border-gray-200">
-                            <div className="px-4">
-                                <div className="font-medium text-base text-gray-800">
+                            <div className="px-4 flex justify-between">
+                                <div className="font-medium text-base dark:text-white text-gray-800">
                                     {user.name}
                                 </div>
-                                <div className="font-medium text-sm text-gray-500">
-                                    {user.email}
-                                </div>
+                                <ModeToggle />
                             </div>
 
                             <div className="mt-3 space-y-1">
@@ -189,7 +192,7 @@ export default function Authenticated({ user, header, children }) {
                     </header>
                 )}
 
-                <main>{children}</main>
+                <main className="max-w-7xl mx-auto">{children}</main>
             </div>
         </ThemeProvider>
     );

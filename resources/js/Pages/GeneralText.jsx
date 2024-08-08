@@ -1,33 +1,132 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, router, useForm, usePage } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
+import { useState } from "react";
+import { RocketIcon } from "@radix-ui/react-icons";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-export default function Dashboard({ auth, text }) {
-    const props = usePage().props;
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+export default function General({ auth, data }) {
+    const [contentDrawer, setContentDrawer] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
 
-        const formData = new FormData(e.target);
-        const resp = post("general")
-        const data = await resp.json()
-        console.log(data);
+    const drawerDetail = (data) => {
+        setIsOpen(true);
+        setContentDrawer(() => (
+            <>
+                <DrawerHeader>
+                    <DrawerTitle className="text-center">Detail </DrawerTitle>
+                    <DrawerClose className="absolute top-4 right-4 bg-yellow-500 p-2 rounded-md">
+                        close
+                    </DrawerClose>
+                </DrawerHeader>
+                <DrawerDescription className="text-center">
+                    {data.title_en}
+                </DrawerDescription>
+                <div className="p-4 flex flex-col gap-3 max-w-7xl mx-auto">
+                    <p className="text-center font-extrabold">English</p>
+                    <p>
+                        <span className="font-bold">Title :</span>
+                        {data.title_en}
+                    </p>
+                    <p>
+                        <span className="font-bold">Sub Title :</span>
+                        {data.sub_title_en}
+                    </p>
+                    <p>
+                        <span className="font-bold">Small Sub Title :</span>
+                        {data.small_sub_title_en}
+                    </p>
+                    <p>
+                        <span className="font-bold">Description :</span>
+                        {data.description_en}
+                    </p>
+                    <p>
+                        <span className="font-bold">Contact :</span>
+                        {data.contact_text_en}
+                    </p>
+
+                    <p className="font-extrabold text-center">Indonesia</p>
+                    <p>
+                        <span className="font-bold">Title : </span>
+                        {data.title_id}
+                    </p>
+                    <p>
+                        <span className="font-bold">Sub Title : </span>
+                        {data.sub_title_id}
+                    </p>
+                    <p>
+                        <span className="font-bold">Small Sub Title : </span>
+                        {data.small_sub_title_id}
+                    </p>
+                    <p>
+                        <span className="font-bold">Description :</span>
+                        {data.description_id}
+                    </p>
+                    <p>
+                        <span className="font-bold">Contact :</span>
+                        {data.contact_text_id}
+                    </p>
+                </div>
+                <DrawerFooter className={"max-w-7xl mx-auto"}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Button
+                            className="w-full bg-red-500 p-2 rounded-md"
+                            onClick={() => deleteData(data.id)}
+                        >
+                            Remove
+                        </Button>
+                        <Button
+                            className="w-full bg-green-500 p-2 rounded-md"
+                            onClick={() => activatedData(data.id)}
+                        >
+                            Set Active
+                        </Button>
+                    </div>
+                </DrawerFooter>
+            </>
+        ));
     };
 
-    const { data, setData, post, processing, errors } = useForm({
-        title_en: '',
-        title_id: '',
-        sub_title_en: '',
-        sub_title_id: '',
-        small_sub_title_en: '',
-        small_sub_title_id: '',
-        description_en: '',
-        description_id: '',
-        contact_text_en: '',
-        contact_text_id: '',
-      })
+    const activatedData = async (id) => {
+       await axios.patch(route("general.update", id),{act:0})
+            .then((response) => {
+                if(response.status == 200){
+                    setIsOpen(false);
+                    router.visit(route("general.index"), {
+                        flash: {
+                            success: "Data has been activated",
+                        },
+                    });
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const editData = (id) => {
+        router.visit(route("general.edit", id));
+    };
 
     return (
         <AuthenticatedLayout
@@ -39,62 +138,80 @@ export default function Dashboard({ auth, text }) {
             }
         >
             <Head title="Dashboard" />
-
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 dark:bg-gray-800 dark:text-white  bg-white overflow-hidden shadow-md rounded-lg lg:p-7 p-4 flex flex-col gap-3">
-                    <form onSubmit={handleSubmit}>
-                        <p>Hero Section</p>
-                        <div className="grid md:grid-cols-2 md:gap-5 gap-3">
-                            <div>
-                                <Label htmlFor="title_id">Judul</Label>
-                                <Input type="text" placeholder="Title" id="title_id" value={data.title_id} onChange={(e) => setData('title_id', e.target.value)}/>
-
-                                <Label htmlFor="subtitle_id">Sub Judul</Label>
-                                <Input type="text" placeholder="Sub Title" id="subtitle_id" value={data.sub_title_id} onChange={(e) => setData('sub_title_id', e.target.value)} />
-
-                                <Label htmlFor="smallsubtitle_id">Sub Judul Kecil </Label>
-                                <Input type="text" placeholder="Small Sub Title" id="smallsubtitle_id" value={data.small_sub_title_id} onChange={(e) => setData('small_sub_title_id', e.target.value)} />
-                            </div>
-                            <div>
-                                <Label htmlFor="title_en">Title</Label>
-                                <Input type="text" placeholder="Title" id="title_en" value={data.title_en} onChange={(e) => setData('title_en', e.target.value)}/>
-
-                                <Label htmlFor="subtitle_en">Sub Title</Label>
-                                <Input type="text" placeholder="Sub Title" id="subtitle_en" value={data.sub_title_en} onChange={(e) => setData('sub_title_en', e.target.value)} />
-
-                                <Label htmlFor="smallsubtitle_en">Small Sub Title </Label>
-                                <Input type="text" placeholder="Small Sub Title" id="smallsubtitle_en" value={data.small_sub_title_en} onChange={(e) => setData('small_sub_title_en', e.target.value)} />
-                            </div>
-                        </div>
-
-                        <p>About Section</p>
-                        <div className="grid md:grid-cols-2 md:gap-5 gap-3">
-                            <div className="">
-                                <Label htmlFor="description_id">Deskripsi </Label>
-                                <Textarea placeholder="Type Description here" id="description_id" value={data.description_id} onChange={(e) => setData('description_id', e.target.value)} />
-                            </div>
-                            <div className="">
-                                <Label htmlFor="description_en">Description </Label>
-                                <Textarea placeholder="Type Description here" id="description_en" value={data.description_en} onChange={(e) => setData('description_en', e.target.value)} />
-                            </div>
-                        </div>
-
-                        <p>Contact Section</p>
-                        <div className="grid md:grid-cols-2 md:gap-5 gap-3">
-                            <div className="">
-                                <Label htmlFor="contact_desc_id">Deskripsi Kontak </Label>
-                                <Input type="text" placeholder="Small Sub Title" id="contact_desc_id" value={data.contact_text_id} onChange={(e) => setData('contact_text_id', e.target.value)} />
-                            </div>
-                            <div className="">
-                                <Label htmlFor="contact_desc_en">Contact Desc </Label>
-                                <Input type="text" placeholder="Small Sub Title" id="contact_desc_en" value={data.contact_text_en} onChange={(e) => setData('contact_text_en', e.target.value)} />
-                            </div>
-
-                        </div>
-                        <Button type="submit" disabled={processing} className="bg-blue-500 dark:text-white">Simpan</Button>
-                    </form>
+            <div className="max-w-7xl my-12 mx-auto  overflow-hidden ">
+                <Link href={route("general.create")}>
+                    <Button className="bg-blue-500 dark:text-white">
+                        Add New
+                    </Button>
+                </Link>
+                <div className="my-4 shadow-md rounded-lg lg:p-7 p-4 dark:bg-gray-800 dark:text-white bg-white">
+                    <Table>
+                        <TableCaption>
+                            A list general text in english
+                        </TableCaption>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-[100px]">
+                                    Title
+                                </TableHead>
+                                <TableHead>Subtitle</TableHead>
+                                <TableHead>Description</TableHead>
+                                <TableHead className="text-right">
+                                    Status
+                                </TableHead>
+                                <TableHead className="text-right">
+                                    Action
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {data.map((item) => (
+                                <TableRow
+                                    key={item.id}
+                                >
+                                    <TableCell>{item.title_en}</TableCell>
+                                    <TableCell>{item.sub_title_en}</TableCell>
+                                    <TableCell className="text-ellipsis overflow-hidden whitespace-nowrap inline-block w-52">
+                                        {item.description_en}
+                                    </TableCell>
+                                    <TableCell className={`text-right ${
+                                        item.is_active ? "text-green-500" : "text-red-500"
+                                    }`}>
+                                        {item.is_active
+                                            ? "Active"
+                                            : "Non Active"}
+                                    </TableCell>
+                                    <TableCell className="flex justify-center gap-3">
+                                        <Button
+                                            className="bg-purple-600 p-2 rounded-md dark:text-white"
+                                            onClick={() =>
+                                                editData(item.id)
+                                            }
+                                        >
+                                            Edit 
+                                        </Button>
+                                        <Button
+                                            className="bg-purple-600 p-2 rounded-md dark:text-white"
+                                            onClick={() =>
+                                                drawerDetail(item)
+                                            }
+                                        >
+                                            View
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
                 </div>
+                <Drawer open={isOpen} onOpenChange={setIsOpen}>
+                    <DrawerContent className="bg-white dark:bg-gray-600">
+                        {contentDrawer}
+                        {/* <ScrollArea className="overflow-auto">
+                        </ScrollArea> */}
+                    </DrawerContent>
+                </Drawer>
             </div>
-        </AuthenticatedLayout >
+        </AuthenticatedLayout>
     );
 }

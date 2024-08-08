@@ -9,6 +9,8 @@ class ProjectStack extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    protected $table = 'list_stack_project';
+    public $fillable = ['project_id','list_stack_id'];
 
     public function project()
     {
