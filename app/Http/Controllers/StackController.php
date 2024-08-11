@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ListStack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules\File;
 use Inertia\Inertia;
 use Throwable;
 
@@ -35,7 +36,8 @@ class StackController extends Controller
         try {
             $request->validate([
                 'name' => 'required',
-                'img' => 'required',
+                'img' => ['required',File::image()->max(1024)],
+                
             ]);
 
 

@@ -9,6 +9,8 @@ use App\Models\ProjectStack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\File;
 
 class ProjectController extends Controller
 {
@@ -42,13 +44,12 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->stacks);
         try {
             $request->validate([
                 'name' => 'required',
                 'description' => 'required',
                 'ldescription' => 'required',
-                'img' => 'required',
+                'img' => ['required',File::image()->max(1024)],
                 'github' => 'required',
                 'demo' => 'required',
                 'stacks' => 'required',
