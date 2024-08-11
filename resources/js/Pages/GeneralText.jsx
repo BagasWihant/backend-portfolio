@@ -128,6 +128,21 @@ export default function General({ auth, data }) {
         router.visit(route("general.edit", id));
     };
 
+    const deleteData = (id) => {
+        axios
+            .delete(route("general.destroy", id))
+            .then((res) => {
+                router.visit(route("general.index"), {
+                    flash: {
+                        success: "Data has been deleted",
+                    },
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user}

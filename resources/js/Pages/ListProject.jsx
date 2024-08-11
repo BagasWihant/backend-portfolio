@@ -1,5 +1,5 @@
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import {
     Table,
     TableBody,
@@ -83,21 +83,30 @@ export default function ListProject({ auth, data }) {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <Button
                                 className="w-full bg-red-500 p-2 rounded-md"
-                                // onClick={() => deleteData(data.id)}
+                                onClick={() => deleteData(data.id)}
                             >
                                 Remove
-                            </Button>
-                            <Button
-                                className="w-full bg-green-500 p-2 rounded-md"
-                                // onClick={() => activatedData(data.id)}
-                            >
-                                Set Active
                             </Button>
                         </div>
                     </DrawerFooter>
                 </>
             );
         });
+    };
+
+    const deleteData = (id) => {
+        axios
+            .delete(route("project.destroy", id))
+            .then((res) => {
+                router.visit(route("project.index"), {
+                    flash: {
+                        success: "Data has been deleted",
+                    },
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     return (
