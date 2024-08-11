@@ -12,7 +12,7 @@ export default function Authenticated({ user, header, children }) {
         useState(false);
     const listMenu = [
         {
-            name: "Home",
+            name: "General Text",
             href: route("general.index"),
             current: route().current("general.index"),
         },
