@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ListStack;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Throwable;
 
@@ -78,7 +79,10 @@ class StackController extends Controller
      */
     public function destroy(string $id)
     {
+        $stackData = ListStack::find($id,['path']);
+        Storage::delete('public/'.$stackData->path);
         ListStack::destroy($id);
-        return response(json_encode('Success'), 204);
+        return response()->json(['message'=>'Deleted'],200);
+        
     }
 }

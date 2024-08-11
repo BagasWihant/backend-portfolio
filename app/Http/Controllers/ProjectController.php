@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use App\Models\Project;
 use App\Models\ProjectStack;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -23,8 +25,7 @@ class ProjectController extends Controller
         //         dump($stack->name);
         //     }
         // }
-        return Inertia::render('ListProject',['data'=>$data]);
-        
+        return Inertia::render('ListProject', ['data' => $data]);
     }
 
     /**
@@ -32,8 +33,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        $stack = ListStack::select(['name','id as value'])->get();
-        return inertia('CreateProject',['stack'=>$stack]);
+        $stack = ListStack::select(['name', 'id as value'])->get();
+        return inertia('CreateProject', ['stack' => $stack]);
     }
 
     /**
@@ -44,34 +45,36 @@ class ProjectController extends Controller
         // dd($request->stacks);
         try {
             $request->validate([
-                'name' => 'required', 
-                'description' => 'required', 
-                'ldescription' => 'required', 
+                'name' => 'required',
+                'description' => 'required',
+                'ldescription' => 'required',
                 'img' => 'required',
-                'github' => 'required', 
-                'demo' => 'required', 
-                'stacks' => 'required', 
+                'github' => 'required',
+                'demo' => 'required',
+                'stacks' => 'required',
             ]);
-            $path = $request->file('img')->store('project','public');
+            $path = $request->file('img')->store('project', 'public');
             $save = Project::create([
-                'name' => $request->name, 
+                'name' => $request->name,
                 'description' => $request->description,
                 'long_description' => $request->ldescription,
                 'img' => $path,
                 'github_url' => $request->github,
                 'demo_url' => $request->demo
             ]);
-            
+
             foreach (json_decode($request->stacks) as $stack) {
                 ProjectStack::create([
                     'project_id' => $save->id,
                     'list_stack_id' => $stack->value
                 ]);
             }
-            return response(json_encode(['message'=>'Succes Added']),200);
+            Cache::forget('dataApi');
+
+            return response(json_encode(['message' => 'Succes Added']), 200);
         } catch (\Throwable $th) {
             //throw $th;
-            return response($th->getMessage(),500);
+            return response($th->getMessage(), 500);
         }
     }
 
@@ -104,6 +107,11 @@ class ProjectController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Cache::forget('dataApi');
+
+        $projectData = Project::find($id, ['img']);
+        Storage::delete('public/' . $projectData->img);
+        Project::destroy($id);
+        return response()->json(['message' => 'Deleted'], 200);
     }
 }

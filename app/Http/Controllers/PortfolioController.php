@@ -6,6 +6,8 @@ use App\Models\GeneralText;
 use App\Models\Project;
 use App\Models\ProjectStack;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class PortfolioController extends Controller
@@ -22,7 +24,15 @@ class PortfolioController extends Controller
         try {
             GeneralText::create($request->only([
                 'title_en',
-                'title_id', 'sub_title_en', 'sub_title_id', 'small_sub_title_en', 'small_sub_title_id', 'description_en', 'description_id', 'contact_text_en', 'contact_text_id'
+                'title_id',
+                'sub_title_en',
+                'sub_title_id',
+                'small_sub_title_en',
+                'small_sub_title_id',
+                'description_en',
+                'description_id',
+                'contact_text_en',
+                'contact_text_id'
             ]));
             return response(json_encode(['message' => 'Success']), 200);
         } catch (\Throwable $th) {
@@ -42,6 +52,8 @@ class PortfolioController extends Controller
             try {
                 GeneralText::query()->update(['is_active' => 0]);
                 GeneralText::where('id', $id)->update(['is_active' => 1]);
+                Cache::forget('dataApi');
+
                 return response(json_encode(['message' => 'Success']), 200);
             } catch (\Throwable $th) {
                 return response(json_encode(['message' => $th->getMessage()]), 500);
@@ -49,7 +61,16 @@ class PortfolioController extends Controller
         }
 
         $data = GeneralText::where('id', $id)->update($request->only([
-            'title_en','title_id', 'sub_title_en', 'sub_title_id', 'small_sub_title_en', 'small_sub_title_id', 'description_en', 'description_id', 'contact_text_en', 'contact_text_id'
+            'title_en',
+            'title_id',
+            'sub_title_en',
+            'sub_title_id',
+            'small_sub_title_en',
+            'small_sub_title_id',
+            'description_en',
+            'description_id',
+            'contact_text_en',
+            'contact_text_id'
         ]));
 
         return json_encode([$request->act]);
@@ -59,5 +80,11 @@ class PortfolioController extends Controller
     {
         $data = GeneralText::where('id', $id)->first();
         return Inertia::render('CreateGeneralText', ['data' => $data, 'status' => 'update']);
+    }
+
+    public function destroy(string $id)
+    {
+        GeneralText::destroy($id);
+        return response()->json(['message' => 'Deleted'], 200);
     }
 }
